@@ -1,0 +1,28 @@
+{
+  "name": "json_ellipsis_web",
+  "version": "0.1.0",
+  "dependencies": {
+    "highlight.js": "^9.15.10",
+    "preact": "^10.0.1",
+    "preact-material-components": "^1.6.1"
+  },
+  "devDependencies": {
+    "@wasm-tool/wasm-pack-plugin": "^1.0.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "~3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0",
+    "worker-plugin": "^3.2.0"
+  },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode=production",
+    "start": "webpack-dev-server --mode=development --open"
+  }
+}

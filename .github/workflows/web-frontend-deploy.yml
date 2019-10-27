@@ -1,0 +1,31 @@
+name: web-frontend-deploy
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Rust
+        uses: hecrj/setup-rust-action@v1
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Check Git tag and Cargo declaration match
+        run: |
+          version="$(cat Cargo.toml | grep version | head -n1 | sed -E 's/^version *= *("(.*)"|(.*))$/\2\3/')"
+          test "$(git rev-parse "v$version")" = "$(git rev-parse HEAD)"
+        working-directory: ./web-frontend
+      - name: Build
+        run: |
+          yarn install --frozen-lockfile --non-interactive
+          yarn build
+        working-directory: ./web-frontend
+      - name: Release
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: web-frontend/dist

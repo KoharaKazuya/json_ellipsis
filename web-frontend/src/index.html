@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>json-ellipsis</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, Arial,
+          sans-serif;
+        min-width: 1024px;
+      }
+      html,
+      body,
+      #app {
+        height: 100%;
+      }
+      .first-responder {
+        display: block;
+        width: 48px;
+        height: 48px;
+        border-radius: 100%;
+        border: 2px solid gray;
+        border-bottom-color: transparent;
+        animation: rotate 1s linear 0s infinite;
+        margin: 48px auto;
+      }
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"><div class="first-responder"></div></div>
+    <noscript><p>To use this page, please enable JavaScript.</p></noscript>
+  </body>
+</html>

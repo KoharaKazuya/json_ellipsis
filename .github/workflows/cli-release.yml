@@ -1,0 +1,49 @@
+name: cli-release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Setup Rust
+        uses: hecrj/setup-rust-action@v1
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Check Git tag and Cargo declaration match
+        run: |
+          version="$(cat Cargo.toml | grep version | head -n1 | sed -E 's/^version *= *("(.*)"|(.*))$/\2\3/')"
+          test "$(git rev-parse "v$version")" = "$(git rev-parse HEAD)"
+        working-directory: ./cli
+      - name: Setup MUSL
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          rustup target add x86_64-unknown-linux-musl
+          sudo apt-get -qq install musl-tools
+      - name: Build for Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          version="$(cat Cargo.toml | grep version | head -n1 | sed -E 's/^version *= *("(.*)"|(.*))$/\2\3/')"
+          cargo build --release --target=x86_64-unknown-linux-musl
+          zip -j json-ellipsis-v${version}-x86_64-unknown-linux-musl.zip target/x86_64-unknown-linux-musl/release/json-ellipsis
+        working-directory: ./cli
+      - name: Build for macOS
+        if: matrix.os == 'macOS-latest'
+        run: |
+          version="$(cat Cargo.toml | grep version | head -n1 | sed -E 's/^version *= *("(.*)"|(.*))$/\2\3/')"
+          cargo build --release --target=x86_64-apple-darwin
+          zip -j json-ellipsis-v${version}-x86_64-apple-darwin.zip target/x86_64-apple-darwin/release/json-ellipsis
+        working-directory: ./cli
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "./cli/*.zip"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

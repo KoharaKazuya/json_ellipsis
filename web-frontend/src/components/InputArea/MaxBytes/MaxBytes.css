@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  flex: 0 0 auto;
+}
+
+.slider {
+  flex: 1 1 auto;
+  margin-left: 24px;
+}

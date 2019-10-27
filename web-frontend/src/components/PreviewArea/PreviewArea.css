@@ -1,0 +1,17 @@
+.view-area {
+  margin-top: 24px;
+  padding: 16px;
+}
+.view-area.pending {
+}
+.view-area.resolved {
+}
+.view-area.error {
+  background: #b00020;
+  color: white;
+}
+
+.code {
+  white-space: normal;
+  font-size: 16px;
+}

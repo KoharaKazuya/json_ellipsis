@@ -1,0 +1,23 @@
+name: core-test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Setup Rust
+        uses: hecrj/setup-rust-action@v1
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build
+        run: cargo build --verbose
+        working-directory: ./core
+      - name: Run tests
+        run: cargo test --verbose
+        working-directory: ./core
